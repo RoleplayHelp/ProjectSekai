@@ -5,10 +5,10 @@ class Navigator {
   static goTo(page) {
     switch (page) {
       case "profile":
-        window.location.href = "./profile/profile.html";
+        window.location.href = "./Profile/index.html";
         break;
       case "calculator":
-        window.location.href = "./calc/calc.html";
+        window.location.href = "./Calc/index.html";
         break;
       default:
         console.error("Trang không tồn tại:", page);
