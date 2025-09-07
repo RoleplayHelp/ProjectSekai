@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Máy tính chỉ số & sát thương</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="../ygg.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-actions">
+      <button id="backToHomeBtn" class="btn icon">
+        <i class="fas fa-home"></i> Trang chủ
+      </button>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="container">
+    <h1 class="page-title">⚔️ Project Sekai - Calculator</h1>
+    <p class="subtitle">Công cụ hỗ trợ tính toán buff/debuff và sát thương nhận vào</p>
+
+    <div class="calculator-accordion">
+      <!-- Phần 1: Stat Calculator -->
+      <div class="calculator-section">
+        <h2 class="section-title" onclick="toggleSection('calcSection')">
+          <i class="fas fa-chart-line"></i> Tính chỉ số sau Buff/Debuff
+          <i class="fas fa-chevron-down toggle-icon"></i>
+        </h2>
+        <div id="calcSection" class="content-section">
+          <div class="calculator">
+            <div class="form-group">
+              <label for="baseValue">Giá trị gốc:</label>
+              <input type="number" id="baseValue" placeholder="Nhập giá trị ban đầu" min="0">
+            </div>
+            <div class="form-group">
+              <label for="buffDebuffCount">Số lượng Buff/Debuff:</label>
+              <input type="number" id="buffDebuffCount" value="0" min="0">
+              <small class="help">Giá trị dương = buff, giá trị âm = debuff</small>
+            </div>
+
+            <div id="buffDebuffInputs" class="buff-debuff-inputs" style="display: none;">
+              <h3 class="subheading"><i class="fas fa-magic"></i> Buff / Debuff</h3>
+              <div id="buffDebuffFields"></div>
+            </div>
+
+            <div id="result" class="result" style="display: none;">
+              <h3 class="subheading"><i class="fas fa-equals"></i> Kết quả</h3>
+              <p id="calculationSteps" class="steps"></p>
+              <p><strong>Giá trị cuối cùng: <span id="finalValue"></span></strong></p>
+              <p id="warning" class="warning" style="display: none;">⚠️ Trong trường hợp bạn tính toán sát thương hoặc chỉ số, giá trị âm sẽ được coi là 0</p>
+            </div>
+
+            <div class="form-actions">
+              <button id="clearBtn" class="btn clear"><i class="fas fa-eraser"></i> Xóa</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phần 2: Damage Calculator -->
+      <div class="calculator-section">
+        <h2 class="section-title" onclick="toggleSection('damageSection')">
+          <i class="fas fa-bolt"></i> Tính sát thương nhận vào
+          <i class="fas fa-chevron-down toggle-icon"></i>
+        </h2>
+        <div id="damageSection" class="content-section">
+          <div id="damageCalculator"></div>
+          <div class="form-actions">
+            <button id="addAttackBtn" class="btn add"><i class="fas fa-plus"></i> Thêm đòn tấn công</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; Project Sekai - Calculator</p>
+  </footer>
+
+  <script src="scripts.js"></script>
+  <script src="Damage.js"></script>
+  <script>
+    function toggleSection(sectionId) {
+      const section = document.getElementById(sectionId);
+      const isVisible = section.style.display === "block";
+      section.style.display = isVisible ? "none" : "block";
+      const title = document.querySelector(`[onclick="toggleSection('${sectionId}')"]`);
+      const icon = title.querySelector(".toggle-icon");
+      icon.className = isVisible ? "fas fa-chevron-down toggle-icon" : "fas fa-chevron-up toggle-icon";
+    }
+  </script>
+</body>
+</html>
