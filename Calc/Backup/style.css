@@ -1,0 +1,163 @@
+/* Import home.css từ thư mục cha */
+@import url('../home.css');
+
+/* Kiểu cho accordion và section */
+.calculator-accordion {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.calculator-section {
+  margin-bottom: 1rem;
+  background: #2a2a2a;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.section-title {
+  cursor: pointer;
+  color: #e0e0e0;
+  padding: 1rem;
+  background: #333;
+  border-radius: 10px 10px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+  transition: background 0.3s;
+}
+
+.section-title:hover {
+  background: #444;
+}
+
+.content-section {
+  display: none;
+  padding: 1rem;
+  background: #1f1f1f;
+  border-radius: 0 0 15px 15px;
+}
+
+.calculator {
+  background: #1f1f1f;
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #e0e0e0;
+}
+
+input, select {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background: #333;
+  color: #fff;
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: #4a90e2;
+}
+
+.help {
+  display: block;
+  font-size: 0.9rem;
+  color: #bbb;
+  margin-top: 0.3rem;
+}
+
+.buff-debuff-inputs {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #1a1a1a;
+  border-radius: 8px;
+}
+
+.buff-debuff-inputs .form-group {
+  margin-bottom: 1rem;
+}
+
+#buffDebuffFields .form-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+#buffDebuffFields .form-group input {
+  flex: 1;
+  min-width: 200px;
+  max-width: 300px;
+}
+
+.result {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: #1a1a1a;
+  border-radius: 8px;
+}
+
+.warning {
+  color: #ff4500;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  font-weight: 600;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.clear {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+.clear:hover {
+  background: linear-gradient(135deg, #c0392b, #a93226);
+}
+
+.attack-group {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #1a1a1a;
+  border-radius: 8px;
+}
+
+#damageCalculator button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background: #4a90e2;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+}
+
+#damageCalculator button:hover {
+  background: #357abd;
+}
+
+footer {
+  margin-top: auto;
+  text-align: center;
+  padding: 1rem;
+  background: #333;
+  color: #e0e0e0;
+}

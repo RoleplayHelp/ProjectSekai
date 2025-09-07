@@ -11,11 +11,13 @@
 <body>
   <header class="header">
     <div class="header-actions">
-      <button id="backToHomeBtn" class="btn btn-home"><i class="fas fa-home"></i> Back to Homepage</button>
+      <button id="backToHomeBtn"><i class="fas fa-home"></i> Back to Homepage</button>
     </div>
   </header>
   <main class="container">
+    <!-- Accordion Wrapper -->
     <div class="calculator-accordion">
+      <!-- Mục 1: Tính toán chỉ số sau buff và debuff -->
       <div class="calculator-section">
         <h2 class="section-title" onclick="toggleSection('calcSection')">Tính toán chỉ số sau buff và debuff <i class="fas fa-chevron-down"></i></h2>
         <div id="calcSection" class="content-section">
@@ -25,7 +27,7 @@
               <input type="number" id="baseValue" placeholder="Nhập giá trị ban đầu" min="0">
             </div>
             <div class="form-group">
-              <label for="buffDebuffCount">Số lượng Buff/Debuff:</label>
+              <label for="buffDebuffCount">Số lượng Buff/Debuff (mặc định 0):</label>
               <input type="number" id="buffDebuffCount" placeholder="0" min="0" value="0">
               <small class="help">Nhập 1 cho 1 buff/debuff, 2 cho 1 buff + 1 debuff, v.v.</small>
             </div>
@@ -34,23 +36,24 @@
               <div id="buffDebuffFields"></div>
             </div>
             <div id="result" class="result" style="display: none;">
-              <h3 class="result-title"><i class="fas fa-poll-h"></i> Kết quả tính toán</h3>
-              <p class="result-steps" id="calculationSteps"></p>
-              <p class="result-final-value"><strong>Giá trị cuối cùng: <span id="finalValue"></span></strong></p>
-              <p id="warning" class="warning" style="display: none;">Nếu bạn đang tính toán chỉ số cơ bản hoặc sát thương, giá trị sẽ là 0.</p>
+              <h3 class="section-title">Kết quả tính toán</h3>
+              <p id="calculationSteps"></p>
+              <p><strong>Giá trị cuối cùng: <span id="finalValue"></span></strong></p>
+              <p id="warning" class="warning" style="display: none;">Nhưng nếu bạn đang tính toán chỉ số cơ bản, sát thương thì giá trị sẽ là 0</p>
             </div>
             <div class="form-actions">
-              <button id="clearBtn" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Xóa</button>
+              <button id="clearBtn" class="btn clear">Xóa</button>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- Mục 2: Tính toán sát thương nhận vào -->
       <div class="calculator-section">
         <h2 class="section-title" onclick="toggleSection('damageSection')">Tính toán sát thương nhận vào <i class="fas fa-chevron-down"></i></h2>
         <div id="damageSection" class="content-section">
-          <div id="damageCalculator" class="damage-calculator"></div>
-          <button id="addAttackBtn" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Thêm đòn tấn công</button>
+          <div id="damageCalculator"></div>
+          <button id="addAttackBtn">Thêm đòn tấn công</button>
         </div>
       </div>
     </div>
@@ -65,6 +68,7 @@
       const section = document.getElementById(sectionId);
       const isVisible = section.style.display === "block";
       section.style.display = isVisible ? "none" : "block";
+      // Cập nhật icon
       const title = document.querySelector(`[onclick="toggleSection('${sectionId}')"]`);
       const icon = title.querySelector("i");
       icon.className = isVisible ? "fas fa-chevron-down" : "fas fa-chevron-up";
