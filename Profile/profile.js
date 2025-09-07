@@ -288,7 +288,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     backToHome() {
-      window.location.href = "../home.html";
+      window.location.href = "../Home.html";
     }
 
     buildProfile() {
