@@ -125,13 +125,6 @@ body {
   transform: rotate(180deg);
 }
 
-.accordion.active .accordion-content {
-  max-height: 2000px; /* đủ lớn để chứa nội dung */
-  padding: 1.2rem;
-  border-left: 3px solid #4a90e2;
-  background-color: #252525;
-}
-
 /* ===== Footer ===== */
 footer {
   background: #1f1f1f;
