@@ -21,7 +21,12 @@ class DamageCalculator {
       const pierceDamageChecked = document.getElementById(`pierceDamage${i}`)?.checked || false;
       const antiTrue = document.getElementById(`antiTrue${i}`)?.checked || false;
       const antiPierce = document.getElementById(`antiPierce${i}`)?.checked || false;
-      const resistance = parseFloat(document.getElementById(`resistance${i}`)?.value) || 1;
+      let resistance = parseFloat(document.getElementById(`resistance${i}`)?.value) || 1;
+
+      // Khóa cứng giá trị kháng của loại sát thương "None"
+      if (damageType === "None") {
+        resistance = 1;
+      }
 
       // Collect defense values
       const defenseFields = document.getElementById(`defenseFields${i}`);
@@ -87,6 +92,8 @@ class DamageUIManager {
     this.clearBtn.textContent = "Xóa tất cả";
     this.clearBtn.className = "btn clear";
     this.container.parentNode.insertBefore(this.clearBtn, this.addAttackBtn.nextSibling);
+
+    this.damageTypes = ["Kinetic", "Pressure", "Force", "None"]; // Đã đảo lại thứ tự
   }
 
   renderAttackInputs(count, attacks = []) {
@@ -103,11 +110,8 @@ class DamageUIManager {
         </div>
         <div class="form-group">
           <label>Hệ sát thương:</label>
-          <select id="damageType${i}">
-            <option value="None">None</option>
-            <option value="Kinetic">Kinetic</option>
-            <option value="Pressure">Pressure</option>
-            <option value="Force">Force</option>
+          <select id="damageType${i}" class="damageType-select">
+            ${this.damageTypes.map(type => `<option value="${type}">${type}</option>`).join('')}
           </select>
         </div>
         <div class="form-group">
@@ -135,6 +139,18 @@ class DamageUIManager {
         <div id="damageResult${i}" class="result"></div>
       `;
       this.container.appendChild(group);
+
+      // Thêm event listener để xử lý khi loại sát thương thay đổi
+      document.getElementById(`damageType${i}`).addEventListener('change', (e) => {
+        const resistanceInput = document.getElementById(`resistance${i}`);
+        if (e.target.value === 'None') {
+          resistanceInput.disabled = true;
+          resistanceInput.value = 1;
+        } else {
+          resistanceInput.disabled = false;
+        }
+        this.triggerCalculation();
+      });
     }
     this.triggerCalculation();
   }
@@ -208,7 +224,8 @@ class DamageController {
   }
 
   calculateDamage() {
-    const calculator = new DamageCalculator(0, this.attackCount, [], []);
+    const attackCount = this.uiManager.container.children.length;
+    const calculator = new DamageCalculator(0, attackCount, [], []);
     const results = calculator.calculateDamage();
     results.forEach((res, i) => this.uiManager.updateDamageResult(i, res));
     this.saveData();
@@ -243,8 +260,8 @@ function addDefense(index) {
   group.className = "form-group";
   group.innerHTML = `
     <label>Phòng thủ ${count}:</label>
-    <input type="number" id="percentRes${index}_${count}" placeholder="% giảm">
-    <input type="number" id="fixedRes${index}_${count}" placeholder="Giảm cố định">
+    <input type="number" id="percentRes${index}_${count}" placeholder="% giảm" value="0">
+    <input type="number" id="fixedRes${index}_${count}" placeholder="Giảm cố định" value="0">
     <button onclick="removeDefense(${index}, ${count})">Xóa</button>
   `;
   defenseFields.appendChild(group);
