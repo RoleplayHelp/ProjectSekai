@@ -165,61 +165,154 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       return age >= 0 ? age : 0;
     }
+    
+    getSelectText(selectElement) {
+        const selectedOption = selectElement.options[selectElement.selectedIndex];
+        return selectedOption ? selectedOption.text : "(chưa nhập)";
+    }
+
+    getExplanation(type, value) {
+      const x = parseFloat(value) || 0;
+      if (x === 1) return "Không thay đổi";
+      if (x > 1) return `Sát thương nhận từ ${type} tăng ${Math.round(x * 100) / 100} lần`;
+      if (x > 0 && x < 1) return `Giảm ${Math.round((1 - x) * 10000) / 100}% sát thương nhận từ ${type}`;
+      if (x === 0) return `Miễn nhiễm sát thương từ ${type}`;
+      if (x < 0) return `Hấp thụ sát thương từ ${type} thành HP, tỉ lệ: 1 Dmg thành ${Math.round(Math.abs(x) * 100) / 100} HP`;
+      return "Giá trị không hợp lệ";
+    }
+
+    getExplanationColor(value) {
+      const x = parseFloat(value) || 0;
+      if (x < 0) return "lightgreen";
+      if (x === 0) return "lightgreen";
+      if (x > 0 && x < 1) return "#4a90e2";
+      if (x === 1) return "#e0e0e0";
+      if (x > 1) return "#ff9900";
+      return "#e0e0e0";
+    }
+
+    getSummaryData() {
+        const total = parseInt(this.fields.total.value) || 0;
+        const hp = parseInt(this.fields.hp.value) || 0;
+        const spd = parseInt(this.fields.spd.value) || 0;
+        const ref = parseInt(this.fields.ref.value) || 0;
+        const pow = parseInt(this.fields.pow.value) || 0;
+        const def = parseInt(this.fields.def.value) || 0;
+        const grd = parseInt(this.fields.grd.value) || 0;
+        const vit = parseInt(this.fields.vit.value) || 0;
+        const inf = parseInt(this.fields.inf.value) || 0;
+
+        const hpReal = hp * 8;
+        const hpTurn = hp * 2;
+        const skillRange = Math.round(total * 0.5 * 10) / 10;
+        const carryWeight = (pow + 2) * 5;
+        const moveSpeed = spd * 1;
+        const reactSpeed = ref * 2;
+
+        const day = this.fields.day.value || "(chưa nhập)";
+        const month = this.fields.month.value || "(chưa nhập)";
+        const year = this.fields.year.value || "(chưa nhập)";
+        const age = (year !== "(chưa nhập)" && month !== "(chưa nhập)" && day !== "(chưa nhập)") 
+          ? this.calculateAge(parseInt(year), parseInt(month), parseInt(day)) 
+          : "(chưa nhập)";
+
+        const kinetic = parseFloat(this.fields.kinetic.value) || 1;
+        const pressure = parseFloat(this.fields.pressure.value) || 1;
+        const force = parseFloat(this.fields.force.value) || 1;
+
+        const genderDisplay = this.getSelectText(this.fields.gender);
+        const raceDisplay = this.getSelectText(this.fields.race);
+        const classDisplay = this.getSelectText(this.fields.class);
+
+        return {
+          total, hp, spd, ref, pow, def, grd, vit, inf,
+          hpReal, hpTurn, skillRange, carryWeight, moveSpeed, reactSpeed,
+          day, month, year, age,
+          kinetic, pressure, force,
+          kineticExplanation: this.getExplanation("Kinetic", kinetic),
+          pressureExplanation: this.getExplanation("Pressure", pressure),
+          forceExplanation: this.getExplanation("Force", force),
+          kineticColor: this.getExplanationColor(kinetic),
+          pressureColor: this.getExplanationColor(pressure),
+          forceColor: this.getExplanationColor(force),
+          genderDisplay, raceDisplay, classDisplay
+        };
+    }
 
     update() {
-      const total = parseInt(this.fields.total.value) || 0;
-      const hp = parseInt(this.fields.hp.value) || 0;
-      const spd = parseInt(this.fields.spd.value) || 0;
-      const ref = parseInt(this.fields.ref.value) || 0;
-      const pow = parseInt(this.fields.pow.value) || 0;
-      const def = parseInt(this.fields.def.value) || 0;
-      const grd = parseInt(this.fields.grd.value) || 0;
-      const vit = parseInt(this.fields.vit.value) || 0;
-      const inf = parseInt(this.fields.inf.value) || 0;
-
-      const hpReal = hp * 8;
-      const hpTurn = hp * 2;
-      const skillRange = Math.round(total * 0.5 * 10) / 10;
-
-      const day = this.fields.day.value || "(chưa nhập)";
-      const month = this.fields.month.value || "(chưa nhập)";
-      const year = this.fields.year.value || "(chưa nhập)";
-      const age = (year !== "(chưa nhập)" && month !== "(chưa nhập)" && day !== "(chưa nhập)") 
-        ? this.calculateAge(parseInt(year), parseInt(month), parseInt(day)) 
-        : "(chưa nhập)";
-
-      const kinetic = parseFloat(this.fields.kinetic.value) || 1;
-      const pressure = parseFloat(this.fields.pressure.value) || 1;
-      const force = parseFloat(this.fields.force.value) || 1;
-
+      const data = this.getSummaryData();
       let html = `<h3>Thông tin cơ bản</h3>
         <p>Tên: ${this.fields.name.value || "(chưa nhập)"}</p>
-        <p>Ngày sinh: ${day}/${month}/${year} (Tuổi: ${age})</p>
-        <p>Giới tính: ${this.fields.gender.value || "(chưa nhập)"}</p>
-        <p>Chủng tộc: ${this.fields.race.value || "(chưa nhập)"}</p>
-        <p>Class: ${this.fields.class.value || "(chưa nhập)"}</p>
+        <p>Ngày sinh: ${data.day}/${data.month}/${data.year} (Tuổi: ${data.age})</p>
+        <p>Giới tính: ${data.genderDisplay}</p>
+        <p>Chủng tộc: ${data.raceDisplay}</p>
+        <p>Class: ${data.classDisplay}</p>
         <p>Tiểu sử: ${this.fields.bio.value || "(chưa nhập)"}</p>
         <hr>
         <h3>Thông tin chỉ số</h3>
-        <p>Tổng stat: ${total}</p>
-        <p>HP thực: ${hpReal} (Giới hạn hồi/turn: ${hpTurn})</p>
-        <p>SPD: ${spd}</p>
-        <p>REF: ${ref}</p>`;
+        <p>Tổng stat: ${data.total}</p>
+        <p>HP thực: ${data.hpReal}</p>
+        <p>SPD: ${data.spd}</p>
+        <p>REF: ${data.ref}</p>`;
 
-      if (pow > 0) html += `<p>POW: ${pow}</p>`;
-      if (def > 0) html += `<p>DEF: ${def}</p>`;
-      if (grd > 0) html += `<p>GRD: ${grd}</p>`;
-      if (vit > 0) html += `<p>VIT: ${vit}</p>`;
-      if (inf > 0) html += `<p>INF: ${inf}</p>`;
+      if (data.pow > 0) html += `<p>POW: ${data.pow}</p>`;
+      if (data.def > 0) html += `<p>DEF: ${data.def}</p>`;
+      if (data.grd > 0) html += `<p>GRD: ${data.grd}</p>`;
+      if (data.vit > 0) html += `<p>VIT: ${data.vit}</p>`;
+      if (data.inf > 0) html += `<p>INF: ${data.inf}</p>`;
 
-      html += `<p>Phạm vi skill tối đa: ${skillRange} m</p>
+      html += `<hr>
+        <h3>Thông tin thêm</h3>
+        <p>Phạm vi kỹ năng và tấn công tối đa: <span style="color:#4a90e2">${data.skillRange} m</span></p>
+        <p>Giới hạn hồi HP tối đa mỗi turn: <span style="color:#4a90e2">${data.hpTurn} HP/ turn</span></p>
+        <p>Giới hạn mang vác vật nặng: <span style="color:#4a90e2">${data.carryWeight} kg</span></p>
+        <p>Tốc độ di chuyển tối đa: <span style="color:#4a90e2">${data.moveSpeed} m/s</span></p>
+        <p>Tốc độ phản xạ: <span style="color:#4a90e2">${data.reactSpeed} m/s (${data.reactSpeed} SPD)</span></p>
         <hr>
         <h3>Hệ kháng</h3>
-        <p>Kinetic: ${kinetic.toFixed(2)}</p>
-        <p>Pressure: ${pressure.toFixed(2)}</p>
-        <p>Force: ${force.toFixed(2)}</p>`;
+        <p>Kinetic: ${data.kinetic.toFixed(2)} - <span style="color: ${data.kineticColor}">${data.kineticExplanation}</span></p>
+        <p>Pressure: ${data.pressure.toFixed(2)} - <span style="color: ${data.pressureColor}">${data.pressureExplanation}</span></p>
+        <p>Force: ${data.force.toFixed(2)} - <span style="color: ${data.forceColor}">${data.forceExplanation}</span></p>`;
 
       this.summaryBox.innerHTML = html;
+    }
+
+    generateSummaryText() {
+        const data = this.getSummaryData();
+        let text = `Thông tin cơ bản
+Tên: ${this.fields.name.value || "(chưa nhập)"}
+Ngày sinh: ${data.day}/${data.month}/${data.year} (Tuổi: ${data.age})
+Giới tính: ${data.genderDisplay}
+Chủng tộc: ${data.raceDisplay}
+Class: ${data.classDisplay}
+Tiểu sử: ${this.fields.bio.value || "(chưa nhập)"}
+
+Thông tin chỉ số
+Tổng stat: ${data.total}
+HP thực: ${data.hpReal}
+SPD: ${data.spd}
+REF: ${data.ref}`;
+
+      if (data.pow > 0) text += `\nPOW: ${data.pow}`;
+      if (data.def > 0) text += `\nDEF: ${data.def}`;
+      if (data.grd > 0) text += `\nGRD: ${data.grd}`;
+      if (data.vit > 0) text += `\nVIT: ${data.vit}`;
+      if (data.inf > 0) text += `\nINF: ${data.inf}`;
+
+      text += `\n
+Thông tin thêm
+Phạm vi kỹ năng và tấn công tối đa: ${data.skillRange} m
+Giới hạn hồi HP tối đa mỗi turn: ${data.hpTurn} HP/ turn
+Giới hạn mang vác vật nặng: ${data.carryWeight} kg
+Tốc độ di chuyển tối đa: ${data.moveSpeed} m/s
+Tốc độ phản xạ: ${data.reactSpeed} m/s (${data.reactSpeed} SPD)
+
+Hệ kháng
+Kinetic: ${data.kinetic.toFixed(2)} - ${data.kineticExplanation}
+Pressure: ${data.pressure.toFixed(2)} - ${data.pressureExplanation}
+Force: ${data.force.toFixed(2)} - ${data.forceExplanation}`;
+        
+        return text;
     }
   }
 
@@ -261,7 +354,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     copySummary() {
-      navigator.clipboard.writeText(this.summaryBox.innerText);
+      const summaryText = this.summaryGenerator.generateSummaryText();
+      navigator.clipboard.writeText(summaryText);
       alert("Đã copy thông tin!");
     }
 
@@ -296,7 +390,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const names = ["Kael", "Liora", "Zephyr", "Sylvara", "Darius"];
       const genders = ["male", "female"];
       const races = ["human", "spirit", "angel"];
-      const classes = ["warrior", "mage", "healer", "archer", "scouter"];
+      const classes = ["attacker", "tanker", "healer", "supporter", "scouter"];
       const bio = "A brave adventurer seeking glory in the land of Sekai.";
 
       this.fields.name.value = names[Math.floor(Math.random() * names.length)];
