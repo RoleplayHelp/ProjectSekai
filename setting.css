@@ -1,0 +1,144 @@
+/* ===== Reset & Base ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #121212;
+  color: #f0f0f0;
+  line-height: 1.6;
+}
+
+/* ===== Layout Container ===== */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* ===== Header ===== */
+.header {
+  background: linear-gradient(90deg, #2b2b2b, #1f1f1f);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.header-title {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.header-actions button {
+  background: transparent;
+  border: 1px solid #4a90e2;
+  color: #4a90e2;
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.header-actions button:hover {
+  background: #4a90e2;
+  color: #fff;
+}
+
+/* ===== Intro Section ===== */
+.intro {
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.intro h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #4a90e2, #6a5acd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.75rem;
+}
+
+.intro p {
+  color: #bbb;
+  font-size: 1.15rem;
+}
+
+/* ===== Accordion ===== */
+.accordion {
+  border: 1px solid #333;
+  border-radius: 8px;
+  background-color: #1f1f1f;
+  margin-bottom: 1.2rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.2rem;
+  background-color: #2a2a2a;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-weight: 600;
+  position: relative;
+}
+
+.accordion-header:hover {
+  background-color: #353535;
+}
+
+.accordion-header span::before {
+  content: attr(data-index);
+  font-size: 1.4rem;
+  color: #4a90e2;
+  opacity: 0.35;
+  margin-right: 0.75rem;
+}
+
+.accordion-header .fas {
+  transition: transform 0.3s;
+}
+
+.accordion-content {
+  padding: 0 1.2rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease-out, padding 0.3s;
+}
+
+/* Khi mở accordion */
+.accordion.active .accordion-header .fas {
+  transform: rotate(180deg);
+}
+
+.accordion.active .accordion-content {
+  max-height: 2000px; /* đủ lớn để chứa nội dung */
+  padding: 1.2rem;
+  border-left: 3px solid #4a90e2;
+  background-color: #252525;
+}
+
+/* ===== Footer ===== */
+footer {
+  background: #1f1f1f;
+  padding: 1rem;
+  text-align: center;
+  color: #777;
+  font-size: 0.9rem;
+  margin-top: 2.5rem;
+  border-top: 1px solid #2a2a2a;
+}
