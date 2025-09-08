@@ -267,9 +267,18 @@ document.addEventListener("DOMContentLoaded", () => {
         <p>Giới hạn hồi HP tối đa mỗi turn: <span style="color:#4a90e2">${data.hpTurn} HP/ turn</span></p>
         <p>Giới hạn mang vác vật nặng: <span style="color:#4a90e2">${data.carryWeight} kg</span></p>
         <p>Tốc độ di chuyển tối đa: <span style="color:#4a90e2">${data.moveSpeed} m/s</span></p>
-        <p>Tốc độ phản xạ: <span style="color:#4a90e2">${data.reactSpeed} m/s (${data.reactSpeed} SPD)</span></p>
-        <hr>
-        <h3>Hệ kháng</h3>
+        <p>Tốc độ phản xạ: <span style="color:#4a90e2">${data.reactSpeed} m/s (${data.reactSpeed} SPD)</span></p>`;
+
+      // Add new DEF and GRD based info
+      if (data.def > 0) {
+        html += `<p>Năng lượng chống lại lực kéo đẩy tối đa tương đương: <span style="color:#4a90e2">${data.def * 5} kg hoặc ${data.def} POW</span></p>`;
+      }
+      if (data.grd > 0) {
+        html += `<p>Khiên có thể chống lại lực đẩy tối đa tương đương: <span style="color:#4a90e2">${data.grd * 5} kg hoặc ${data.grd} POW</span></p>`;
+      }
+
+      html += `<hr>
+        <h3>Hệ số kháng</h3>
         <p>Kinetic: ${data.kinetic.toFixed(2)} - <span style="color: ${data.kineticColor}">${data.kineticExplanation}</span></p>
         <p>Pressure: ${data.pressure.toFixed(2)} - <span style="color: ${data.pressureColor}">${data.pressureExplanation}</span></p>
         <p>Force: ${data.force.toFixed(2)} - <span style="color: ${data.forceColor}">${data.forceExplanation}</span></p>`;
@@ -305,9 +314,18 @@ Phạm vi kỹ năng và tấn công tối đa: ${data.skillRange} m
 Giới hạn hồi HP tối đa mỗi turn: ${data.hpTurn} HP/ turn
 Giới hạn mang vác vật nặng: ${data.carryWeight} kg
 Tốc độ di chuyển tối đa: ${data.moveSpeed} m/s
-Tốc độ phản xạ: ${data.reactSpeed} m/s (${data.reactSpeed} SPD)
+Tốc độ phản xạ: ${data.reactSpeed} m/s (${data.reactSpeed} SPD)`;
 
-Hệ kháng
+      // Add new DEF and GRD based text
+      if (data.def > 0) {
+        text += `\nNăng lượng chống lại lực kéo đẩy: ${data.def * 5} kg`;
+      }
+      if (data.grd > 0) {
+        text += `\nNăng lượng chống lại lực đẩy: ${data.grd * 5} kg`;
+      }
+
+      text += `\n
+Hệ số kháng
 Kinetic: ${data.kinetic.toFixed(2)} - ${data.kineticExplanation}
 Pressure: ${data.pressure.toFixed(2)} - ${data.pressureExplanation}
 Force: ${data.force.toFixed(2)} - ${data.forceExplanation}`;
@@ -332,6 +350,11 @@ Force: ${data.force.toFixed(2)} - ${data.forceExplanation}`;
       this.saveBtn = document.getElementById("saveBtn");
       this.backToHomeBtn = document.getElementById("backToHomeBtn");
       this.buildProfileBtn = document.getElementById("buildProfileBtn");
+
+      // New properties for help text elements
+      this.hpHelpText = document.getElementById("hp-help");
+      this.spdHelpText = document.getElementById("spd-help");
+      this.refHelpText = document.getElementById("ref-help");
     }
 
     getFormData() {
@@ -366,6 +389,7 @@ Force: ${data.force.toFixed(2)} - ${data.forceExplanation}`;
       this.summaryGenerator.update();
       this.validator.validate();
       this.resistanceExplainer.update();
+      this.updateStatHelpTexts();
     }
 
     undo() {
@@ -374,6 +398,7 @@ Force: ${data.force.toFixed(2)} - ${data.forceExplanation}`;
       this.summaryGenerator.update();
       this.validator.validate();
       this.resistanceExplainer.update();
+      this.updateStatHelpTexts();
     }
 
     manualSave() {
@@ -449,6 +474,19 @@ Force: ${data.force.toFixed(2)} - ${data.forceExplanation}`;
       this.summaryGenerator.update();
       this.resistanceExplainer.update();
       this.autoSave();
+      this.updateStatHelpTexts();
+    }
+
+    updateStatHelpTexts() {
+      const total = parseInt(this.fields.total.value) || 0;
+      const hpMin = Math.floor(total * 0.2);
+      const spdMin = Math.floor(total * 0.1);
+      const spdMax = Math.floor(total * 0.6);
+      const refMin = Math.floor(total * 0.1);
+
+      this.hpHelpText.textContent = `Nhập HP (≥ ${hpMin}).`;
+      this.spdHelpText.textContent = `Nhập SPD (${spdMin}-${spdMax}).`;
+      this.refHelpText.textContent = `Nhập REF (≥ ${refMin}).`;
     }
 
     attachEvents() {
@@ -460,6 +498,10 @@ Force: ${data.force.toFixed(2)} - ${data.forceExplanation}`;
           this.autoSave();
         });
       }
+
+      this.fields.total.addEventListener("input", () => {
+        this.updateStatHelpTexts();
+      });
 
       this.copyBtn.addEventListener("click", () => this.copySummary());
       this.resetBtn.addEventListener("click", () => this.resetProfile());
@@ -478,6 +520,7 @@ Force: ${data.force.toFixed(2)} - ${data.forceExplanation}`;
       this.validator.validate();
       this.summaryGenerator.update();
       this.resistanceExplainer.update();
+      this.updateStatHelpTexts(); // Initial call to set values on page load
       this.attachEvents();
     }
   }

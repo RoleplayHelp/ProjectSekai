@@ -77,10 +77,10 @@
           <label for="class">Class *</label>
           <select id="class">
             <option value="">--Chọn--</option>
-            <option value="attacker">Attacker</option>
-            <option value="tanker">Tanker</option>
+            <option value="warrior">Attacker</option>
+            <option value="mage">Tanker</option>
             <option value="healer">Healer</option>
-            <option value="supporter">Supporter</option>
+            <option value="archer">Supporter</option>
             <option value="scouter">Scouter</option>
           </select>
           <small class="help">Chọn class của nhân vật (ảnh hưởng đến chỉ số phụ).</small>
@@ -94,9 +94,9 @@
         </div>
 
         <h4>Stat Chính</h4>
-        <div class="form-group"><label for="hp">HP / Health Point</label><input id="hp" type="number" value="0"><small class="help">Nhập HP (≥ 20% tổng chỉ số).</small></div>
-        <div class="form-group"><label for="spd">SPD / Speed</label><input id="spd" type="number" value="0"><small class="help">Nhập SPD (10%-60% tổng chỉ số).</small></div>
-        <div class="form-group"><label for="ref">REF / Reflex</label><input id="ref" type="number" value="0"><small class="help">Nhập REF (≥ 10% tổng chỉ số).</small></div>
+        <div class="form-group"><label for="hp">HP / Health Point</label><input id="hp" type="number" value="0"><small id="hp-help" class="help">Nhập HP (≥ 20% tổng chỉ số).</small></div>
+        <div class="form-group"><label for="spd">SPD / Speed</label><input id="spd" type="number" value="0"><small id="spd-help" class="help">Nhập SPD (10%-60% tổng chỉ số).</small></div>
+        <div class="form-group"><label for="ref">REF / Reflex</label><input id="ref" type="number" value="0"><small id="ref-help" class="help">Nhập REF (≥ 10% tổng chỉ số).</small></div>
 
         <h4>Stat Class</h4>
         <div class="form-group"><label for="pow">POW / Power</label><input id="pow" type="number" value="0" min="0"><small class="warning">Chủ yếu dành cho Attacker, ảnh hưởng tới sát thương của nhân vật.</small></div>
