@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const backToHomeBtn = document.getElementById('backToHomeBtn');
     if (backToHomeBtn) {
         backToHomeBtn.addEventListener('click', () => {
-            window.location.href = '../Home.html';
+            window.location.href = 'Home.html';
         });
     }
 });
